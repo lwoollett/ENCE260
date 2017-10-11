@@ -7,15 +7,24 @@
 #define P_TIME = 100;
 #define PSR = ["P", "S", "R"]
 
+
+void display_char(char c)
+{
+  char to_display[2];
+  to_display[0] = c;
+  to_display[1] = '\0';
+  tinygl_text(to_display);
+}
+
 int main (void)
 {
-    system_init ();
+  system_init();
+  navswitch_init();
 
-
-    while (1)
-    {
-
-
-
-    }
+  while (1)
+  {
+    display_char(42);
+    tinygl_update();
+  }
+  return 0;
 }
