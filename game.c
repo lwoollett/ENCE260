@@ -56,13 +56,23 @@ int main (void)
         //Set to x so that if recchar == x then we havent received or
         //There has been an error with the receiving of the data.
 
+        if (ir_uart_read_ready_p() != 0) { //If its ready to recieve a char
+            recchar = ir_uart_getc(); //Recieve the character.
+            recstatus = 1; //char has been recieved.
+            if (recchar != 'P' && recchar != 'S' && recchar != 'R') {
+              //We have a serious problem.
+              //Write some code to do some error checking.
+              continue;
+            }
+        }
+
         if (navswitch_push_event_p (NAVSWITCH_WEST)) { //If the stick has been flicked to the left
             chosen -= 1;
             if (chosen < 0) { //Check if we've fallen off the array
               chosen = 2; //Flip round to the back of the array
             }
         }
-        else if (navswitch_push_event_p (NAVSWITCH_EAST)) { //Uf the stick has been flicked to the right
+        else if (navswitch_push_event_p (NAVSWITCH_EAST)) { //iff the stick has been flicked to the right
             chosen += 1;
             if (chosen > 2) { //Check if we've gone past the end of the array
               chosen = 0; //Flip round to the front of the array
@@ -70,7 +80,10 @@ int main (void)
         }
         else if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
             //Has been pressed in, send the data.
-            sentstatus = 1;
+            if (ir_uart_write_ready_p() != 0) { //If we are able to send a char
+              ir_uart_putc(PSR[chosen]); //Send the char
+              sentstatus = 1; //Send is a success... Hopefully.
+            }
         }
         if (sentstatus && recstatus) {
             //Check if you have both recieved and sent data.
