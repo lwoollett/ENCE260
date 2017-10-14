@@ -26,6 +26,8 @@ int checkwin(char me, char you){ //Function for checking if a player wins.
       return 1;
     } else if (me == 'R' && you == 'S') { //Rock beats scissors
       return 1;
+    } else if (you == 'x'){
+      return -1;
     } else { //You lost
       return 0;
     }
@@ -35,7 +37,7 @@ int main (void)
 {
     char PSR[3] = {'P', 'S', 'R'}; //The char array that holds our options.
     int chosen = 0; //Our counter for figuring out where in the array we are.
-
+    int counter = 0;
     //More setup functions.
     system_init ();
     tinygl_init (P_TIME);
@@ -60,18 +62,18 @@ int main (void)
         tinygl_update ();
         navswitch_update ();
 
-        if (recstatus == 0){
+        if (recstatus == 0){ //While you havent recieved a packet
             if (ir_uart_read_ready_p() != 0) { //If its ready to recieve a char
                 recchar = ir_uart_getc(); //Recieve the character.
                 recstatus = 1; //char has been recieved.
-                if (recchar != 'P' && recchar != 'S' && recchar != 'R') {
-                    recstatus = 0;
-                    recchar = 0;
+                if (recchar != 'P' && recchar != 'S' && recchar != 'R') { //if we've picked up some
+                    recstatus = 0; //Random ir junk floating around
+                    recchar = 'x'; //Drop it and try recieve again.
                 }
             }
         }
 
-        if (sentstatus == 0)
+        if (sentstatus == 0) //While you havent sent a packet
         {
             if (navswitch_push_event_p (NAVSWITCH_WEST)) { //If the stick has been flicked to the left
                 chosen -= 1;
@@ -103,10 +105,14 @@ int main (void)
             } else if (winstatus == 2) { //Drawn games suck
               display_char('D');
             }
+            counter += 1;
             //Display char stuff is temp code.
-            if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
-                sentstatus = 0;
-                recstatus = 0;
+            if (navswitch_push_event_p (NAVSWITCH_PUSH) && counter > 100) { //Push in the navswitch
+                sentstatus = 0; //To start a new game
+                recstatus = 0; //So reset these vars
+                counter = 0;
+                chosen = 0;
+                recchar = 'x';
             }
 
         } else {
