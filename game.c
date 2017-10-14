@@ -3,6 +3,7 @@
 #include "navswitch.h"
 #include "tinygl.h"
 #include "../fonts/font5x7_1.h"
+#include "ir_uart.h"
 
 
 #define P_TIME 500 //50Hz Master race. 144 is overrated.
@@ -41,6 +42,9 @@ int main (void)
     tinygl_font_set (&font5x7_1);
     tinygl_text_speed_set (MESSAGE_RATE);
     navswitch_init ();
+
+    ir_uart_init();
+
     pacer_init (P_TIME);
 
     while (1) {
@@ -59,6 +63,7 @@ int main (void)
         if (ir_uart_read_ready_p() != 0) { //If its ready to recieve a char
             recchar = ir_uart_getc(); //Recieve the character.
             recstatus = 1; //char has been recieved.
+            chosen = -3;
             if (recchar != 'P' && recchar != 'S' && recchar != 'R') {
               //We have a serious problem.
               //Write some code to do some error checking.
@@ -68,9 +73,9 @@ int main (void)
 
         if (navswitch_push_event_p (NAVSWITCH_WEST)) { //If the stick has been flicked to the left
             chosen -= 1;
-            if (chosen < 0) { //Check if we've fallen off the array
+            /*if (chosen < 0) { //Check if we've fallen off the array
               chosen = 2; //Flip round to the back of the array
-            }
+            }*/
         }
         else if (navswitch_push_event_p (NAVSWITCH_EAST)) { //iff the stick has been flicked to the right
             chosen += 1;
@@ -86,6 +91,8 @@ int main (void)
             }
         }
         if (sentstatus && recstatus) {
+            chosen = -3;
+            display_char(PSR[chosen]);
             //Check if you have both recieved and sent data.
             int winstatus = checkwin(PSR[chosen], recchar); //Check who won
             if (winstatus == 0) { //You've lost
