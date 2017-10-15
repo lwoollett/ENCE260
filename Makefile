@@ -55,11 +55,15 @@ prescale.o: ../../drivers/avr/prescale.c ../../drivers/avr/prescale.h ../../driv
 timer.o: ../../drivers/avr/timer.c ../../drivers/avr/system.h ../../drivers/avr/timer.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
+utils.o: utils.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
 
 # Link: create ELF output file from object files.
-game.out: game.o system.o ir_uart.o display.o ledmat.o navswitch.o pacer.o tinygl.o font.o timer0.o usart1.o prescale.o timer.o
+game.out: game.o system.o ir_uart.o display.o ledmat.o navswitch.o pacer.o tinygl.o font.o timer0.o usart1.o prescale.o timer.o utils.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
+
 
 
 # Target: clean project.
