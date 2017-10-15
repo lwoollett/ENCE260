@@ -4,7 +4,8 @@
 #include "ir_uart.h"
 #include "tinygl.h"
 #include "../fonts/font5x7_1.h"
-#include "string.h"
+#include <string.h>
+#include <stdio.h>
 
 #define P_TIME 500 //50Hz Master race. 144 is overrated.
 #define MESSAGE_RATE 10
@@ -35,12 +36,19 @@ void display_message (char* message)
 }
 
 void getmessage(char* buff, uint8_t wld[]) {
+    char buff1[12];
+    char buff2[12];
+    char buff3[12];
+    snprintf(buff1, 10, "%d", wld[0]);
+    snprintf(buff2, 10, "%d", wld[1]);
+    snprintf(buff3, 10, "%d", wld[2]);
+
     strcpy(buff, "W: ");
-    strcat(buff, wld[0]);
+    strcat(buff, buff1);
     strcat(buff, " L: ");
-    strcat(buff, wld[1]);
+    strcat(buff, buff2);
     strcat(buff, " D: ");
-    strcat(buff, wld[2]);
+    strcat(buff, buff3);
 }
 
 int checkwin(char me, char you) { //Function for checking if a player wins.
@@ -60,10 +68,10 @@ int checkwin(char me, char you) { //Function for checking if a player wins.
 }
 
 void displaywin(int winstatus) {
-    if (winstatus == 0) { //You've lost
-      display_char('L');
-    } else if (winstatus == 1) { //You've won
+    if (winstatus == 0) { //You've won
       display_char('W');
+    } else if (winstatus == 1) { //You've lost
+      display_char('L');
     } else if (winstatus == 2) { //Drawn games suck
       display_char('D');
     }
