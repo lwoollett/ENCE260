@@ -1,3 +1,9 @@
+/*
+    File     utils.c
+    Authors  Luke Woollett, James Coleman
+    Date     15 October 2017
+    Brief    Utilities for the PSR game.
+*/
 #include "system.h"
 #include "pacer.h"
 #include "navswitch.h"
@@ -35,20 +41,23 @@ void display_message (char* message)
     }
 }
 
-void getmessage(char* buff, uint8_t wld[]) {
-    char buff1[12];
-    char buff2[12];
-    char buff3[12];
-    snprintf(buff1, 10, "%d", wld[0]);
-    snprintf(buff2, 10, "%d", wld[1]);
-    snprintf(buff3, 10, "%d", wld[2]);
+void getmessage(char* buff, int wld[]) {
+    char c1[2] = {0};
+    char c2[2] = {0};
+    char c3[2] = {0};
 
-    strcpy(buff, "W: ");
-    strcat(buff, buff1);
-    strcat(buff, " L: ");
-    strcat(buff, buff2);
-    strcat(buff, " D: ");
-    strcat(buff, buff3);
+    c1[0] = wld[0];
+    c2[0] = wld[1];
+    c3[0] = wld[2];
+
+
+    strcpy(buff, "W:");
+    strcat(buff, c1);
+    strcat(buff, " L:");
+    strcat(buff, c2);
+    strcat(buff, " D:");
+    strcat(buff, c3);
+    strcat(buff, "\0");
 }
 
 int checkwin(char me, char you) { //Function for checking if a player wins.

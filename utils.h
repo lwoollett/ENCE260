@@ -1,8 +1,9 @@
-/*  File     utils.h
+/*
+    File     utils.h
     Authors  Luke Woollett, James Coleman
     Date     15 October 2017
     Brief    Utilities for the PSR game.
-    */
+*/
 
 
 
@@ -26,6 +27,6 @@ int checkwin(char me, char you);
 
 void displaywin(int winstatus);
 
-void getmessage(char* buff, uint8_t wld[]);
+void getmessage(char* buff, int wld[]);
 
 #endif

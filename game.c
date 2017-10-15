@@ -1,3 +1,9 @@
+/*
+    File     game.c
+    Authors  Luke Woollett, James Coleman
+    Date     15 October 2017
+    Brief    PSR Game, primary file.
+*/
 #include "system.h"
 #include "pacer.h"
 #include "navswitch.h"
@@ -17,7 +23,7 @@ int main (void)
 
     uint8_t start_counter = 0; //Used
     uint8_t end_counter = 0;
-    uint8_t wld[3] = {0, 0, 0}; //Loss win draw counter
+    int wld[3] = {48, 48, 48}; //Loss win draw counter
 
     //More setup functions.
     system_init ();
@@ -83,7 +89,6 @@ int main (void)
         }
         if (sentstatus == 1 && recstatus == 1) { //Check if you have both recieved and sent data.
             int winstatus = checkwin(PSR[chosen], recchar); //Check who won
-            wld[winstatus] += 1;
             displaywin(winstatus);
 
             if (end_counter < 100){ //This has the same functionality as the start counter
@@ -100,9 +105,11 @@ int main (void)
             }
             if (navswitch_push_event_p (NAVSWITCH_NORTH)) {
                 char buff[80] = {"\0"};
+                wld[winstatus] += 1;
                 getmessage(buff, wld);
                 display_message(buff);
             }
+
         } else {
           display_char(PSR[chosen]); //Display the chosen char
         }
