@@ -4,7 +4,7 @@
 #include "tinygl.h"
 #include "../fonts/font5x7_1.h"
 #include "ir_uart.h"
-#include "utils.c"
+#include "utils.h"
 
 
 #define P_TIME 500 //50Hz Master race. 144 is overrated.
