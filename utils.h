@@ -26,5 +26,6 @@ int checkwin(char me, char you);
 
 void displaywin(int winstatus);
 
+void getmessage(char* buff, uint8_t wld[]);
 
 #endif
