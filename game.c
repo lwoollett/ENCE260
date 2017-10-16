@@ -103,11 +103,11 @@ int main (void)
                 recchar = 'x';
                 end_counter = 0;
             }
-            if (navswitch_push_event_p (NAVSWITCH_NORTH)) {
-                char buff[80] = {"\0"};
-                wld[winstatus] += 1;
-                getmessage(buff, wld);
-                display_message(buff);
+            if (navswitch_push_event_p (NAVSWITCH_NORTH)) { //If we're wanting to see the stats
+                char buff[30] = {"\0"}; //Just a buffer, could be smaller
+                wld[winstatus] += 1; //Add one to the list
+                getmessage(buff, wld); //Get the string for game completion
+                display_message(buff); //Display it
             }
 
         } else {

@@ -30,7 +30,6 @@ void display_message (char* message)
     uint8_t counter = 0;
     tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
     tinygl_text(message);
-
     while(counter == 0) {
         pacer_wait();
         navswitch_update ();
@@ -42,22 +41,22 @@ void display_message (char* message)
 }
 
 void getmessage(char* buff, int wld[]) {
-    char c1[2] = {0};
-    char c2[2] = {0};
+    char c1[2] = {0}; //We're getting some char arrays to put in the strings
+    char c2[2] = {0}; //As strcat complains when we give it chars
     char c3[2] = {0};
 
-    c1[0] = wld[0];
-    c2[0] = wld[1];
-    c3[0] = wld[2];
+    c1[0] = wld[0]; //Set the first item to the char of win
+    c2[0] = wld[1]; //Etc
+    c3[0] = wld[2]; //Etc
 
 
-    strcpy(buff, "W:");
-    strcat(buff, c1);
-    strcat(buff, " L:");
-    strcat(buff, c2);
+    strcpy(buff, "W:"); //Start the string off with w
+    strcat(buff, c1); //Put number in
+    strcat(buff, " L:"); //Rinse
+    strcat(buff, c2); //Repeat
     strcat(buff, " D:");
     strcat(buff, c3);
-    strcat(buff, "\0");
+    strcat(buff, "\0"); //And end it properly. 
 }
 
 int checkwin(char me, char you) { //Function for checking if a player wins.
