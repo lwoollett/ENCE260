@@ -16,8 +16,7 @@
 #define P_TIME 500 //50Hz Master race. 144 is overrated.
 #define MESSAGE_RATE 10
 
-int main (void)
-{
+int main (void) {
     char PSR[3] = {'P', 'S', 'R'}; //The char array that holds our options.
     int8_t chosen = 0; //Our counter for figuring out where in the array we are.
 
@@ -55,7 +54,7 @@ int main (void)
             start_counter++;       //You dont immediate go both through the display message
         }                          //And straight away select a option.
 
-        if (recstatus == 0){ //While you havent recieved a packet
+        if (recstatus == 0) { //While you havent recieved a packet
             if (ir_uart_read_ready_p() != 0) { //If its ready to recieve a char
                 recchar = ir_uart_getc(); //Recieve the character.
                 recstatus = 1; //char has been recieved.
@@ -66,24 +65,23 @@ int main (void)
             }
         }
 
-        if (sentstatus == 0 && start_counter == 100) //While you havent sent a packet
-        {
+        if (sentstatus == 0 && start_counter == 100) { //While you havent sent a packet
             if (navswitch_push_event_p (NAVSWITCH_WEST)) { //If the stick has been flicked to the left
                 chosen -= 1; //go down in the list
                 if (chosen < 0) { //Check if we've fallen off the array
-                  chosen = 2; //Flip round to the back of the array
+                    chosen = 2; //Flip round to the back of the array
                 }
             }
             else if (navswitch_push_event_p (NAVSWITCH_EAST)) { //iff the stick has been flicked to the right
                 chosen += 1; //Go up in the list
                 if (chosen > 2) { //Check if we've gone past the end of the array
-                  chosen = 0; //Flip round to the front of the array
+                    chosen = 0; //Flip round to the front of the array
                 }
             }
             else if (navswitch_push_event_p (NAVSWITCH_PUSH)) { //Has been pressed in, send the data.
                 if (ir_uart_write_ready_p() != 0) { //If we are able to send a char
-                  ir_uart_putc(PSR[chosen]); //Send the char
-                  sentstatus = 1; //Send is a success... Hopefully.
+                    ir_uart_putc(PSR[chosen]); //Send the char
+                    sentstatus = 1; //Send is a success... Hopefully.
                 }
             }
         }
@@ -91,8 +89,8 @@ int main (void)
             int winstatus = checkwin(PSR[chosen], recchar); //Check who won
             displaywin(winstatus);
 
-            if (end_counter < 100){ //This has the same functionality as the start counter
-              end_counter++;
+            if (end_counter < 100) { //This has the same functionality as the start counter
+                end_counter++;
             }
 
             if (navswitch_push_event_p (NAVSWITCH_PUSH) && end_counter == 100) { //Push in the navswitch
@@ -111,7 +109,7 @@ int main (void)
             }
 
         } else {
-          display_char(PSR[chosen]); //Display the chosen char
+            display_char(PSR[chosen]); //Display the chosen char
         }
 
     }

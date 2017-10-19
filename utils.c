@@ -16,8 +16,8 @@
 #define P_TIME 500 //50Hz Master race. 144 is overrated.
 #define MESSAGE_RATE 10
 
-void display_char(char c) //Small function to display a character on the screen
-{ //It takes a character, adds a list end to it, and then pushes it to the display.
+void display_char(char c) { //Small function to display a character on the screen
+    //It takes a character, adds a list end to it, and then pushes it to the display.
     tinygl_text_mode_set(TINYGL_TEXT_MODE_STEP);
     char to_display[2];
     to_display[0] = c;
@@ -25,17 +25,16 @@ void display_char(char c) //Small function to display a character on the screen
     tinygl_text(to_display);
 }
 
-void display_message (char* message)
-{
+void display_message (char* message) { //Function to display some scrolling text
     uint8_t counter = 0;
-    tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
+    tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL); //Set tinygl to scrolling
     tinygl_text(message);
     while(counter == 0) {
         pacer_wait();
         navswitch_update ();
         tinygl_update();
-        if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
-            counter++;
+        if (navswitch_push_event_p (NAVSWITCH_PUSH)) { //if the navswitch has been pressed
+            counter++; //Exit out of the loop so that we can continue with the game.
         }
     }
 }
@@ -56,31 +55,31 @@ void getmessage(char* buff, int wld[]) {
     strcat(buff, c2); //Repeat
     strcat(buff, " D:");
     strcat(buff, c3);
-    strcat(buff, "\0"); //And end it properly. 
+    strcat(buff, "\0"); //And end it properly.
 }
 
 int checkwin(char me, char you) { //Function for checking if a player wins.
     if (me == you) { //Draw scenario
-      return 2;
+        return 2;
     } else if (me == 'P' && you == 'R') { //Paper beats rock
-      return 0;
+        return 0;
     } else if (me == 'S' && you == 'P') { //Scissors beats paper
-      return 0;
+        return 0;
     } else if (me == 'R' && you == 'S') { //Rock beats scissors
-      return 0;
-    } else if (you == 'x'){
-      return -1;
+        return 0;
+    } else if (you == 'x') {
+        return -1;
     } else { //You lost
-      return 1;
+        return 1;
     }
 }
 
 void displaywin(int winstatus) {
     if (winstatus == 0) { //You've won
-      display_char('W');
+        display_char('W');
     } else if (winstatus == 1) { //You've lost
-      display_char('L');
+        display_char('L');
     } else if (winstatus == 2) { //Drawn games suck
-      display_char('D');
+        display_char('D');
     }
 }
