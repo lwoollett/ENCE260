@@ -19,14 +19,19 @@
 #include "../fonts/font5x7_1.h"
 
 
+//Small function to display a character on the screen
 void display_char(char c);
 
+//Function to display some scrolling text
 void display_message (char* message);
 
+//Function for checking if a player wins
 int checkwin(char me, char you);
 
+//Function to display whether the player won, lost or drew
 void displaywin(int winstatus);
 
+//Function to display the scores
 void getmessage(char* buff, int wld[]);
 
 #endif
