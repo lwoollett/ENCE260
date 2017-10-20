@@ -13,7 +13,9 @@
 #include <string.h>
 #include <stdio.h>
 
-#define P_TIME 500 //50Hz Master race. 144 is overrated.
+//Pacer time and message rate in the main file will always stay as these values
+//so they can be defined here directly
+#define P_TIME 500 //Pacer time [Hz]
 #define MESSAGE_RATE 10
 
 void display_char(char c) { //Small function to display a character on the screen
@@ -39,9 +41,9 @@ void display_message (char* message) { //Function to display some scrolling text
     }
 }
 
-void getmessage(char* buff, int wld[]) {
+void getmessage(char* buff, int wld[]) { //Function to display the scores
     char c1[2] = {0}; //We're getting some char arrays to put in the strings
-    char c2[2] = {0}; //As strcat complains when we give it chars
+    char c2[2] = {0}; //as strcat complains when we give it chars
     char c3[2] = {0};
 
     c1[0] = wld[0]; //Set the first item to the char of win
@@ -58,7 +60,7 @@ void getmessage(char* buff, int wld[]) {
     strcat(buff, "\0"); //And end it properly.
 }
 
-int checkwin(char me, char you) { //Function for checking if a player wins.
+int checkwin(char me, char you) { //Function for checking if a player wins
     if (me == you) { //Draw scenario
         return 2;
     } else if (me == 'P' && you == 'R') { //Paper beats rock
@@ -74,12 +76,12 @@ int checkwin(char me, char you) { //Function for checking if a player wins.
     }
 }
 
-void displaywin(int winstatus) {
+void displaywin(int winstatus) { //Function to display whether the player won, lost or drew
     if (winstatus == 0) { //You've won
         display_char('W');
     } else if (winstatus == 1) { //You've lost
         display_char('L');
-    } else if (winstatus == 2) { //Drawn games suck
+    } else if (winstatus == 2) { //It's a draw
         display_char('D');
     }
 }

@@ -13,16 +13,16 @@
 #include "utils.h"
 
 
-#define P_TIME 500 //50Hz Master race. 144 is overrated.
+#define P_TIME 500 //Pacer time [Hz]
 #define MESSAGE_RATE 10
 
 int main (void) {
     char PSR[3] = {'P', 'S', 'R'}; //The char array that holds our options.
     int8_t chosen = 0; //Our counter for figuring out where in the array we are.
 
-    uint8_t start_counter = 0; //Used
+    uint8_t start_counter = 0;
     uint8_t end_counter = 0;
-    int wld[3] = {48, 48, 48}; //Loss win draw counter
+    int wld[3] = {48, 48, 48}; //Win loss draw counter
 
     //More setup functions.
     system_init ();
@@ -81,7 +81,7 @@ int main (void) {
             else if (navswitch_push_event_p (NAVSWITCH_PUSH)) { //Has been pressed in, send the data.
                 if (ir_uart_write_ready_p() != 0) { //If we are able to send a char
                     ir_uart_putc(PSR[chosen]); //Send the char
-                    sentstatus = 1; //Send is a success... Hopefully.
+                    sentstatus = 1; //Send is a success
                 }
             }
         }
